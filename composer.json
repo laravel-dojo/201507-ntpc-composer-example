@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "fabpot/goutte": "^3.1"
+        "fabpot/goutte": "^3.1",
+        "nesbot/carbon": "~1.14"
     }
 }

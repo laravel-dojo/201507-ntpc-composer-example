@@ -2,8 +2,11 @@
 
 require '../bootstrap.php';
 
+date_default_timezone_set('Asia/Taipei');
+
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use Carbon\Carbon;
 
 $client = new Client;
 $crawler = $client->request('GET', 'http://www.slps.ntpc.edu.tw/');
@@ -47,7 +50,9 @@ foreach($rows as $index => $row) {
 
 		$step2 = explode('點閱率', $step1);
 		
-		$contents[$index]['date'] = $step2[0];
+		$date = explode('/', $step2[0]);
+
+		$contents[$index]['date'] = Carbon::create((int) mb_substr($date[0], 1, mb_strlen($date[0])), (int) $date[1], (int) $date[2], 0, 0, 0);
 		$contents[$index]['rank'] = (int) $step2[1];
 	}
 }
