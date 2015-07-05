@@ -7,6 +7,7 @@ date_default_timezone_set('Asia/Taipei');
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 $baseUrl = 'http://www.slps.ntpc.edu.tw';
 
@@ -68,6 +69,10 @@ foreach($rows as $index => $row) {
 // echo '<pre>';
 // var_dump($contents);
 // echo '</pre>';
+$news = new Collection($contents);
+$orderByRankNews = $news->sortByDesc(function ($article) {
+	return $article['rank'];
+});
 Carbon::setLocale('zh-TW');
 ?>
 <!DOCTYPE html>
@@ -111,7 +116,7 @@ Carbon::setLocale('zh-TW');
 				</tr>
 			</thead>
 			<tbody>
-			<?php foreach($contents as $index => $article): ?>
+			<?php foreach($orderByRankNews->values()->all() as $index => $article): ?>
 				<tr>
 					<td class="text-center"><?=$index+1?></td>
 					<td>
