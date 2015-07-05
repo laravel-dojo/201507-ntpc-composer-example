@@ -68,6 +68,7 @@ foreach($rows as $index => $row) {
 // echo '<pre>';
 // var_dump($contents);
 // echo '</pre>';
+Carbon::setLocale('zh-TW');
 ?>
 <!DOCTYPE html>
 <html>
