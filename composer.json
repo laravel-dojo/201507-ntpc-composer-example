@@ -1,0 +1,14 @@
+{
+    "name": "laravel-dojo/201507-ntpc-composer-example",
+    "description": "a modern php development example using composer packages",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Shengyou Fan",
+            "email": "shengyoufan@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
