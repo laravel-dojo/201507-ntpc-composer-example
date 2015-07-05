@@ -8,6 +8,8 @@ use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Carbon\Carbon;
 
+$baseUrl = 'http://www.slps.ntpc.edu.tw';
+
 $client = new Client;
 $crawler = $client->request('GET', 'http://www.slps.ntpc.edu.tw/');
 
@@ -27,16 +29,22 @@ foreach($rows as $index => $row) {
 		$domCrawler->add($row);
 		$content = $domCrawler->filter('a')->each(function (Crawler $node, $index) {
 
+			$link = $node->attr('href');
+
 			$rawContent = utf8_decode($node->html());
 			$rawContent = strip_tags($rawContent);
 			$rawContent = trim($rawContent);
 			$rawContent = preg_replace("/\r|\n/", "", $rawContent);
 
-			return $rawContent;
+			return [
+				$link,
+				$rawContent,
+			];
 		});
 
-		$contents[$index]['title'] = str_replace('...', '', $content[0]);
-		$contents[$index]['from'] = $content[1];
+		$contents[$index]['link'] = str_replace('...', '', $content[0][0]);
+		$contents[$index]['title'] = str_replace('...', '', $content[0][1]);
+		$contents[$index]['from'] = $content[1][1];
 	}
 }
 
@@ -105,7 +113,11 @@ foreach($rows as $index => $row) {
 			<?php foreach($contents as $index => $article): ?>
 				<tr>
 					<td class="text-center"><?=$index+1?></td>
-					<td><?=$article['title']?></td>
+					<td>
+						<a href="<?=$baseUrl.$article['link']?>" target="_blank">
+							<?=$article['title']?>
+						</a>
+					</td>
 					<td class="text-center"><?=$article['from']?></td>
 					<td><?=$article['date']->diffForHumans()?></td>
 					<td class="text-center"><?=$article['rank']?></td>
